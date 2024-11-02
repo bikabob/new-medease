@@ -30,7 +30,7 @@ def submit_prescription(request):
     return render(request, 'prescription/index.html', {'form': form})
 
 def view_prescription(request, pk):
-    prescription = get_object_or_404(Prescription, pk=pk)
+    prescription = Prescription.objects.get(id=pk)
     context = {
         'status': "success",
         "data": {

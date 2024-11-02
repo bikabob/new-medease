@@ -49,12 +49,9 @@ def create_token(request):
         name = request.POST.get("name")
         age = request.POST.get("age")
         gender = request.POST.get("gender")
-
-        # Create the patient instance
         patient = PatientDetails(name=name, age=age, gender=gender)
         patient.save()
-        
-        # Response with the created token number
+    
         return HttpResponse(f"Created Token Successfully: {patient.token_number}")
 
     return render(request, "token/token.html")

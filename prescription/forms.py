@@ -2,6 +2,10 @@ from django import forms
 from .models import Prescriptions
 from hospital.models import PatientDetails
 
+from django import forms
+from .models import Prescription
+from hospital.models import PatientDetails
+
 class SubmitPrescription(forms.ModelForm):
     token_number = forms.IntegerField(help_text="Enter token number")
 
@@ -14,3 +18,4 @@ class SubmitPrescription(forms.ModelForm):
         if not PatientDetails.objects.filter(token_number=token_number).exists():
             raise forms.ValidationError("Invalid token number. Patient not found.")
         return token_number
+

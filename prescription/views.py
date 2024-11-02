@@ -25,10 +25,11 @@ def submit_prescription(request):
 
             
             return redirect('prescription_success')  
-
     else:
         form = SubmitPrescription()
     return render(request, 'prescription/index.html', {'form': form})
+
+
 
 def view_prescription(request, pk):
     prescription = get_object_or_404(Prescriptions, pk=pk)
@@ -43,3 +44,4 @@ def view_prescription(request, pk):
         }
     }
     return JsonResponse(context)
+

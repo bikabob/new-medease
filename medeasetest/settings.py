@@ -82,7 +82,7 @@ DATABASES = {
 
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-        'NAME': 'medease_db',
+        'NAME': 'medease_test',
 
         'USER': 'postgres',
 

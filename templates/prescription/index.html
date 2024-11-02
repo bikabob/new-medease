@@ -60,9 +60,10 @@
     <script>
         document.getElementById('fetch-patient-data').addEventListener('click', function() {
             const tokenNumber = document.getElementById('token-number').value;
-            fetch(`/token/view//${tokenNumber}/`)
+            fetch(`/prescription/view/${tokenNumber}/`)
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data)
                     if (data.success) {
                         document.getElementById('patient-info-section').style.display = 'block';
                         document.getElementById('patient-name').textContent = data.patient.name;

@@ -24,21 +24,6 @@ def submit_prescription(request):
 
             
             return redirect('prescription_success')  
-
     else:
         form = SubmitPrescription()
     return render(request, 'prescription/index.html', {'form': form})
-
-def view_prescription(request, pk):
-    prescription = Prescription.objects.get(id=pk)
-    context = {
-        'status': "success",
-        "data": {
-            "patient": prescription.patient.name,
-            "doctor": prescription.doctor.name,
-            "hospital": prescription.hospital.name,
-            "text": prescription.text,
-            "date": prescription.date,
-        }
-    }
-    return JsonResponse(context)

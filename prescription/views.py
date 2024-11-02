@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from .forms import SubmitPrescription
-from .models import Prescription
+from .models import Prescriptions
 from hospital.models import PatientDetails
+
 
 def submit_prescription(request):
     if request.method == "POST":
@@ -14,7 +15,7 @@ def submit_prescription(request):
             hospital = patient.hospital
 
 
-            instance = Prescription.objects.create(
+            instance = Prescriptions.objects.create(
                 patient=patient,
                 doctor=doctor,
                 hospital=hospital,
@@ -27,3 +28,20 @@ def submit_prescription(request):
     else:
         form = SubmitPrescription()
     return render(request, 'prescription/index.html', {'form': form})
+
+
+
+def view_prescription(request, pk):
+    prescription = get_object_or_404(Prescriptions, pk=pk)
+    context = {
+        'status': "success",
+        "data": {
+            "patient": prescription.patient.name,
+            "doctor": prescription.doctor.name,
+            "hospital": prescription.hospital.name,
+            "text": prescription.text,
+            "date": prescription.date,
+        }
+    }
+    return JsonResponse(context)
+

@@ -3,7 +3,7 @@ from .models import Prescriptions
 from hospital.models import PatientDetails
 
 from django import forms
-from .models import Prescription
+from .models import Prescriptions
 from hospital.models import PatientDetails
 
 class SubmitPrescription(forms.ModelForm):

@@ -1,85 +1,41 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Prescription</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Doctor's Prescription</title>
+    <link rel="stylesheet" href="{% static 'css/priss.css' %}">
 </head>
 <body>
-    <div class="prescription-form-container">
-        <header>
-            <h1>Digital Prescription</h1>
-        </header>
+    <div class="prescription-container">
+        <h1>Doctor's Prescription</h1>
+        <div class="doctor-info">
+            <p><strong>Doctor's Name:</strong> Dr. John Smith</p>
+            <p><strong>Specialization:</strong> General Practitioner</p>
+            <p><strong>License Number:</strong> 12345678</p>
+            <p><strong>Hospital:</strong> Health Clinic</p>
+        </div>
 
-        <!-- Token Number Section -->
-        <form action="{% url 'submit_prescription' %}" method="post" id="token-form">
-            {% csrf_token %}
-            <section class="token-section">
-                <h3>Patient Token</h3>
-                <label for="token-number">Enter Patient Token Number:</label>
-                <input type="number" id="token-number" name="token_number" required>
-                <button type="button" id="fetch-patient-data">Fetch Patient Data</button>
-            </section>
-        </form>
+        <hr>
 
-        <!-- Doctor Information Section -->
-        <section class="doctor-info">
-            <h3>Doctor Information</h3>
-            <p><strong>Name:</strong> {{ form.pataint.name }}</p>
-            <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
-            <p><strong>License Number:</strong> {{ doctor.license_number }}</p>
-        </section>
+        <div class="patient-info">
+            <p><strong>Patient's Name:</strong> Jane Doe</p>
+            <p><strong>Age:</strong> 30</p>
+            <p><strong>Contact:</strong> (123) 456-7890</p>
+        </div>
 
-        <!-- Patient Information Section -->
-        <section class="patient-info" id="patient-info-section" style="display: none;">
-            <h3>Patient Information</h3>
-            <p><strong>Name:</strong> <span id="patient-name"></span></p>
-            <p><strong>Age:</strong> <span id="patient-age"></span></p>
-            <p><strong>Date of Birth:</strong> <span id="patient-dob"></span></p>
-            <p><strong>Contact:</strong> <span id="patient-contact"></span></p>
-        </section>
+        <hr>
 
-        <!-- Prescription Input Section -->
-        <form action="{% url 'submit_prescription' %}" method="post" id="prescription-form">
-            {% csrf_token %}
-            <section class="prescription-content">
-                <h3>Prescription</h3>
-                <label for="prescription-text">Prescription Details:</label>
-                <textarea id="prescription-text" name="prescription_text" rows="5" required></textarea>
-            </section>
+        <div class="prescription-details">
+            <h3>Prescription Details</h3>
+            <p>1. Medication: Amoxicillin 500mg</p>
+            <p>Dosage: 1 capsule three times a day for 7 days</p>
+            <p>2. Medication: Paracetamol 500mg</p>
+            <p>Dosage: 1 tablet every 6 hours as needed for pain</p>
+        </div>
 
-            <!-- Footer Section -->
-            <footer>
-                <button type="submit">Submit Prescription</button>
-            </footer>
-        </form>
+        <hr>
     </div>
-
-    <!-- JavaScript to Fetch Patient Data -->
-    <script>
-        document.getElementById('fetch-patient-data').addEventListener('click', function() {
-            const tokenNumber = document.getElementById('token-number').value;
-
-            fetch(`/prescription/view/${tokenNumber}/`)
-
-            fetch(`http://127.0.0.1:8000/prescription/token/view/${tokenNumber}/`)
-
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data)
-                    if (data.success) {
-                        document.getElementById('patient-info-section').style.display = 'block';
-                        document.getElementById('patient-name').textContent = data.patient.name;
-                        document.getElementById('patient-age').textContent = data.patient.age;
-                        document.getElementById('patient-dob').textContent = data.patient.date_of_birth;
-                        document.getElementById('patient-contact').textContent = data.patient.contact_number;
-                    } else {
-                        alert('No patient found with this token number.');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        });
-    </script>
 </body>
 </html>

@@ -10,38 +10,40 @@ def submit_prescription(request):
         form = SubmitPrescription(request.POST)
         if form.is_valid():
             token = form.cleaned_data['token_number']
-            patient = PatientDetails.objects.get(token_number=token)
-            doctor = patient.doctor
-            hospital = patient.hospital
+            try:
+                patient = PatientDetails.objects.get(token_number=token)
+                doctor = patient.doctor
+                hospital = patient.hospital
 
+                instance = Prescriptions.objects.create(
+                    patient=patient,
+                    doctor=doctor,
+                    hospital=hospital,
+                    text=form.cleaned_data['text']
+                )
+                instance.save()
 
-            instance = Prescriptions.objects.create(
-                patient=patient,
-                doctor=doctor,
-                hospital=hospital,
-                text=form.cleaned_data['text']
-            )
-            instance.save()
-
-            
-            return redirect('prescription_success')  
+                return redirect('prescription_success')  
+            except PatientDetails.DoesNotExist:
+                form.add_error('token_number', 'Invalid token number. Patient not found.')
     else:
         form = SubmitPrescription()
+    
+    
     return render(request, 'prescription/index.html', {'form': form})
 
-
-
-def view_prescription(request, pk):
-    prescription = get_object_or_404(Prescriptions, pk=pk)
-    context = {
-        'status': "success",
-        "data": {
-            "patient": prescription.patient.name,
-            "doctor": prescription.doctor.name,
-            "hospital": prescription.hospital.name,
-            "text": prescription.text,
-            "date": prescription.date,
+def view_prescription(request, tokenNumber):
+    try:
+        patient = PatientDetails.objects.get(token_number=tokenNumber)
+        context = {
+            'status': "success",
+            "data": {
+                "patient": patient.name,
+                "age": patient.age,  # Ensure you have this field
+                "date_of_birth": patient.dob,  # Ensure you have this field
+                "contact": patient.contact,  # Ensure you have this field
+            }
         }
-    }
-    return JsonResponse(context)
-
+        return JsonResponse(context)
+    except PatientDetails.DoesNotExist:
+        return JsonResponse({"status": "error", "message": "Patient not found."}, status=404)

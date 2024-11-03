@@ -44,7 +44,7 @@ class PatientDetails(models.Model):
     hospital = models.ForeignKey(HospitalModel, on_delete=models.CASCADE)
     doctor = models.ForeignKey(DoctorModel,on_delete=models.CASCADE, blank=True, null=True)
     token_number = models.PositiveIntegerField(editable=False, unique=True)
-
+    dob = models.DateField(blank=True,null=True) 
     def save(self, *args, **kwargs):
         if not self.token_number:
             last_token = PatientDetails.objects.order_by('-token_number').first()
